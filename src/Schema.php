@@ -96,6 +96,16 @@ class Schema {
   }
 
   /**
+   * Returns an array of fields to ignore.
+   *
+   * @return string[]
+   *   The field names array.
+   */
+  public function getIgnoredFields() : array {
+    return module_invoke_all('graphql_api_ignored_fields');
+  }
+
+  /**
    * Convert GraphQL query arguments into EntityFieldQuery conditions.
    *
    * @param $args
@@ -254,6 +264,10 @@ class Schema {
 
   public function addFieldDefs() {
     foreach (field_info_fields() as $field => $field_info) {
+      if (in_array($field, $this->getIgnoredFields())) {
+        continue;
+      }
+
       if (!empty($field_info['columns'])) {
         $graphql_fields = [];
         foreach ($field_info['columns'] as $column => $info) {
@@ -546,6 +560,10 @@ class Schema {
       if (!empty($properties_info['bundles'])) {
         foreach ($properties_info['bundles'] as $prop_bundle => $bundle_info) {
           foreach ($bundle_info['properties'] as $field => $field_info) {
+            if (in_array($field, $this->getIgnoredFields())) {
+              continue;
+            }
+
             // if user filter fields by bundle
             if ($bundle && $bundle != $prop_bundle) {
               continue;

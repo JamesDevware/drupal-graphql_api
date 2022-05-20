@@ -30,3 +30,10 @@ function hook_graphql_api_info() {
     ]
   ];
 }
+
+/**
+ * Ignore fields.
+ */
+function hook_graphql_api_ignored_fields() {
+  return ['field_name'];
+}
