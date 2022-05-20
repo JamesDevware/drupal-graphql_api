@@ -691,6 +691,7 @@ class Schema {
         break;
       case 'float':
       case 'decimal':
+      case 'numeric':
         $type = Type::float();
         break;
       case 'boolean':
